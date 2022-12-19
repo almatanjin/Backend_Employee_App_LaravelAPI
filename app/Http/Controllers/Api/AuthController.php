@@ -26,7 +26,7 @@ class AuthController extends Controller
         if($validator->fails()){
             $response = [
                 'success' => false,
-                'message' => $validator->errors()
+                'message' => $validator->errors()->first()
             ];
             return response()->json($response, 400);
         }
@@ -40,6 +40,7 @@ class AuthController extends Controller
         $response = [
             'success' => true,
             'data' => $success,
+            'user_info'=>$user,
             'message' => "User register successfull"
         ];
 
@@ -52,11 +53,13 @@ class AuthController extends Controller
         {
             $user = Auth::user();
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
+            
 
         $response = [
             'success' => true,
             'data' => $success,
-            'message' => "User loginb successfull"
+            'user_info'=>$user,
+            'message' => "User login successfull"
         ];
         return response()->json($response, 200);
 
